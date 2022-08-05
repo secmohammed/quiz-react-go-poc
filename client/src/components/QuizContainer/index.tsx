@@ -1,3 +1,5 @@
+/** @format */
+
 import { BackwardOutlined } from '@ant-design/icons'
 import {
   Button,
@@ -22,7 +24,7 @@ import {
   QuizState,
 } from '../../types'
 const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
+  wrapperCol: { span: 16 },
 }
 
 const Index: FC<{
@@ -51,7 +53,6 @@ const Index: FC<{
     currentQuestionIndex,
     quiz.questions.length,
   ])
-  console.log('!@#!2')
   const handleQuizFinish = useCallback(
     (id: number, questionAnswer: QuestionAnswer[]) => {
       fetch(
@@ -68,12 +69,9 @@ const Index: FC<{
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data, '>>>>')
           setQuizResult(data as QuizResultResponse)
         })
-        .catch((error) => {
-          console.log(error, '>!@#!#@!')
-        })
+        .catch((error) => {})
     },
     [],
   )
@@ -114,6 +112,7 @@ const Index: FC<{
     setCurrentQuestionIndex(0)
     setQuestionAnswer([])
   }, [])
+
   const calculateQuizStepStatus = useMemo(() => {
     if (currentStep === 0) {
       return 'wait'
@@ -221,6 +220,10 @@ const Index: FC<{
                   </Button>
                   <Button
                     htmlType='button'
+                    disabled={
+                      questionAnswer.length ===
+                      currentQuestionIndex
+                    }
                     onClick={() => {
                       if (
                         currentQuestionIndex ===
