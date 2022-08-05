@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  api:
+    container_name: golang_container
+    build: ./server
+    ports:
+      - 8000:8000
+    restart: on-failure
+    volumes:
+      - .:/app
+    networks:
+      - local_network
+
+  frontend:
+    container_name: react_container
+    build: ./client
+    volumes:
+      - './:/app'
+      - '/app/node_modules'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - 3000:3000
+    env_file:
+      - ./client/.env
+    networks:
+      - local_network
+    command: npm start
+networks:
+  local_network:
+    driver: bridge
